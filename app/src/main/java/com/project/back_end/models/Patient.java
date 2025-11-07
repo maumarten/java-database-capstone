@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "patients", indexes = {
+@Table(name = "patient", indexes = {
         @Index(name = "ix_patients_email", columnList = "email", unique = true)
 })
 public class Patient {
@@ -31,8 +31,7 @@ public class Patient {
     private String password;
 
     @NotNull
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 12)
     private String phone;
 
     @NotNull

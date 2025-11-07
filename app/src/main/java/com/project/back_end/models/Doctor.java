@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "doctors", indexes = {
+@Table(name = "doctor", indexes = {
         @Index(name = "ix_doctors_specialty", columnList = "specialty")
 })
 public class Doctor {
@@ -38,13 +38,12 @@ public class Doctor {
     private String password;
 
     @NotNull
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits")
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 12)
     private String phone;
 
     @ElementCollection
     @CollectionTable(name = "doctor_available_times", joinColumns = @JoinColumn(name = "doctor_id"))
-    @Column(name = "time_slot", nullable = false, length = 32) // e.g., "09:00-10:00"
+    @Column(name = "available_times", nullable = false, length = 32) // e.g., "09:00-10:00"
     private List<String> availableTimes = new ArrayList<>();
 
     public Doctor() {}

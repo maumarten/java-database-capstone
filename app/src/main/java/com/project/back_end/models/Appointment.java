@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "appointments",
+@Table(name = "appointment",
         indexes = {
             @Index(name = "ix_appt_patient_time", columnList = "patient_id,appointmentTime"),
             @Index(name = "ix_appt_doctor_time", columnList = "doctor_id,appointmentTime")
@@ -32,7 +32,7 @@ public class Appointment {
 
     @NotNull
     @Future(message = "Appointment time must be in the future")
-    @Column(nullable = false)
+    @Column(name = "appointment_time", nullable = false)
     private LocalDateTime appointmentTime;
 
     @NotNull
