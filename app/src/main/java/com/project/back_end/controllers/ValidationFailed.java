@@ -2,27 +2,24 @@ package com.project.back_end.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestControllerAdvice
 public class ValidationFailed {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        
-        // Iterate through all the validation errors
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            String errorMessage = error.getDefaultMessage();
-            errors.put("message", "" + errorMessage);
+        Map<String, String> payload = new HashMap<>();
+        StringBuilder sb = new StringBuilder();
+        for (FieldError fe : ex.getBindingResult().getFieldErrors()) {
+            if (sb.length() > 0) sb.append("; ");
+            sb.append(fe.getField()).append(": ").append(fe.getDefaultMessage());
         }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        payload.put("message", sb.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
 }
