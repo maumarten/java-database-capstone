@@ -37,7 +37,7 @@ window.adminLoginHandler = async function adminLoginHandler() {
 
     const admin = { username, password };
 
-    const res = await fetch(ADMIN_API + "/login", {
+    const res = await fetch(ADMIN_API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(admin),
@@ -48,7 +48,7 @@ window.adminLoginHandler = async function adminLoginHandler() {
       if (data?.token) {
         localStorage.setItem("token", data.token);
         selectRole("admin");
-        window.location.href = "/admin/adminDashboard.html"; // Thymeleaf route
+        window.location.href = `/adminDashboard/${data.token}`;
         return;
       }
     }
@@ -65,7 +65,7 @@ window.doctorLoginHandler = async function doctorLoginHandler() {
     const email    = document.getElementById("doctorEmail")?.value?.trim();
     const password = document.getElementById("doctorPassword")?.value?.trim();
 
-    const doctor = { email, password };
+    const doctor = { identifier: email, password };
 
     const res = await fetch(DOCTOR_API, {
       method: "POST",
@@ -78,7 +78,7 @@ window.doctorLoginHandler = async function doctorLoginHandler() {
       if (data?.token) {
         localStorage.setItem("token", data.token);
         selectRole("doctor");
-        window.location.href = "/doctor/doctorDashboard.html";
+        window.location.href = `/doctorDashboard/${data.token}`;
         return;
       }
     }

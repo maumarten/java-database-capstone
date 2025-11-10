@@ -41,7 +41,7 @@ public class Doctor {
     @Column(nullable = false, length = 12)
     private String phone;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "doctor_available_times", joinColumns = @JoinColumn(name = "doctor_id"))
     @Column(name = "available_times", nullable = false, length = 32) // e.g., "09:00-10:00"
     private List<String> availableTimes = new ArrayList<>();

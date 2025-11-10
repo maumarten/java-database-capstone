@@ -11,8 +11,10 @@ html, body { height: 100%; font-family: Roboto, Arial, sans-serif; }
   flex: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 24px;
-  background: url('../images/defineRole/index.png') center/cover no-repeat fixed;
-  padding: 32px;
+  background:
+    linear-gradient(0deg, rgba(255,255,255,0.75), rgba(255,255,255,0.75)),
+    url('../images/defineRole/index.png') center/cover no-repeat;
+  padding: 48px 32px;
 }
 .main-content h2 {
   font-size: 2rem; font-weight: 700; color: #0c3c3d;
@@ -20,10 +22,16 @@ html, body { height: 100%; font-family: Roboto, Arial, sans-serif; }
 }
 
 /* Buttons */
-.role-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+.role-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
 .dashboard-btn {
   background: #015c5d; color: #fff; border: 0; border-radius: 10px;
-  padding: 12px 20px; font-size: 1rem; cursor: pointer; transition: filter .2s, transform .05s;
+  padding: 14px 28px; font-size: 1.05rem; cursor: pointer; transition: filter .2s, transform .05s;
+  min-width: 260px;
 }
 .dashboard-btn:hover { filter: brightness(1.1); }
 .dashboard-btn:active { transform: translateY(1px); }

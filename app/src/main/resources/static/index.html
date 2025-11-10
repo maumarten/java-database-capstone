@@ -43,20 +43,16 @@
 
   <!-- Role-selection / modal behavior -->
   <script type="module">
-    // minimal role selection; your services/index.js can replace this
-    const setRoleAndGo = (role) => {
-      localStorage.setItem("userRole", role);
-      // send users to appropriate starting page
-      if (role === "admin")   window.location.href = "/admin/adminDashboard.html";     // served by Thymeleaf route
-      if (role === "doctor")  window.location.href = "/doctor/doctorDashboard.html";   // served by Thymeleaf route
-      if (role === "patient") window.location.href = "/pages/patientDashboard.html";   // static
-    };
-
-    document.getElementById("roleAdmin")  .addEventListener("click", () => setRoleAndGo("admin"));
-    document.getElementById("roleDoctor") .addEventListener("click", () => setRoleAndGo("doctor"));
-    document.getElementById("rolePatient").addEventListener("click", () => setRoleAndGo("patient"));
+    import { openModal } from "./js/components/modals.js";
+    // Admin / Doctor → show login modal to obtain token, then redirect
+    document.getElementById("roleAdmin")  .addEventListener("click", () => openModal("adminLogin"));
+    document.getElementById("roleDoctor") .addEventListener("click", () => openModal("doctorLogin"));
+    // Patient → simple static dashboard
+    document.getElementById("rolePatient").addEventListener("click", () => {
+      localStorage.setItem("userRole", "patient");
+      window.location.href = "/pages/patientDashboard.html";
+    });
   </script>
-  <!-- If you prefer the dedicated file, uncomment the next line and remove the inline module above -->
-  <!-- <script type="module" src="./js/services/index.js" defer></script> -->
+  <script type="module" src="./js/services/index.js" defer></script>
 </body>
 </html>

@@ -66,6 +66,7 @@ public class CoordinatorService {
         if (hasSpec && hasTime) return doctorService.filterDoctorByTimeAndSpecility(specialty, time);
         if (hasSpec) return doctorService.filterDoctorBySpecility(specialty);
         if (hasTime) return doctorService.filterDoctorsByTime(time);
+        if (hasName) return doctorService.findDoctorByName(name);
 
         Map<String, Object> res = new HashMap<>();
         res.put("doctors", doctorService.getDoctors());

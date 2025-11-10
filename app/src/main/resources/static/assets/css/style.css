@@ -12,6 +12,35 @@
     flex-wrap: wrap;
     min-height: 60px;
   }
+
+  /* Header brand used by header.js */
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand .logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+  .brand .app-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0a0a23;
+  }
+  .nav a {
+    text-decoration: none;
+    color: #0a0a23;
+    margin-left: 16px;
+    font-weight: 600;
+  }
+  .nav a:hover { color: #003e3e; }
+  .adminBtn {
+    background: #015c5d; color: #fff; border: 0; border-radius: 8px;
+    padding: 8px 14px; cursor: pointer;
+  }
+  .adminBtn:hover { filter: brightness(1.1); }
   
   /* Logo section with image + title */
   .logo-link{
@@ -81,12 +110,45 @@
     color:#A62B1F;
   }
 /* Footer Section */
-.footer {
+  .footer {
     background-color: #f4f4f4;
-    color: #fff;
+    color: #0a0a23;
     padding: 40px 20px;
     border-top: 2px solid #f4f4f4;
     
+  }
+  .footer-inner{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .footer-columns{
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  /* Brand area */
+  .footer-brand{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1 1 280px;
+  }
+  .footer-brand-logo{
+    height: 44px;
+    width: auto;
+  }
+  .brand-text{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-text small{
+    color: #5a5f71;
   }
   
   .footer-container {
@@ -129,6 +191,32 @@
     flex-direction: column;
     gap: 10px;
   }
+  .footer-column a{
+    color: #0a0a23;
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .footer-column a:hover{ color:#003e3e; }
+
+  .footer-bottom{
+    width: 100%;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e6e6e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    color: #5a5f71;
+    font-size: 14px;
+  }
+  .footer-bottom-links a{
+    color: #0a0a23;
+    margin-left: 16px;
+    text-decoration: none;
+  }
+  .footer-bottom-links a:hover{ color:#003e3e; }
   
   .footer-column h4 {
     font-size: 16px;
@@ -202,8 +290,56 @@
   }
 
 
+  /* Lightweight booking overlay */
+  .ripple-overlay{
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.4);
+    opacity: 0;
+    transition: opacity .2s ease-in-out;
+    z-index: 9998;
+  }
+  .ripple-overlay.active{ opacity: 1; }
 
-  .dashboard-btn{
+  .modalApp{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(520px, 92%);
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    padding: 20px;
+    z-index: 9999;
+    max-height: 80vh;           /* keep dialog inside viewport */
+    overflow: auto;             /* allow scrolling to bottom actions */
+  }
+  .modalApp h2{ margin-bottom: 10px; }
+  .modalApp .confirm-booking{
+    margin-top: 10px;
+    background: #015c5d; color: #fff; border: 0;
+    border-radius: 8px; padding: 10px 14px; cursor: pointer;
+  }
+  .modalApp .confirm-booking:hover{ filter: brightness(1.1); }
+  .modalApp .modal-close{
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #666;
+    cursor: pointer;
+  }
+  .modalApp .modal-close:hover{ color: #000; }
+
+
+  /* Limit full-width buttons to modal contexts only */
+  .modal .dashboard-btn{
     width: 100%;
   }
 
@@ -241,9 +377,11 @@
 
   #content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
+    /* Keep card width stable even when there is a single result */
+    grid-template-columns: repeat(auto-fill, minmax(315px, 360px));
     gap: 40px;
     padding: 20px;
+    justify-content: center;
   }
 
   .doctor-card {

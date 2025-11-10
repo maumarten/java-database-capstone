@@ -28,23 +28,29 @@ public class DoctorService {
     }
 
     public List<String> getDoctorAvailability(Long doctorId, LocalDate date) {
-        // Collect booked times
+        // Collect booked times (canonical format HH:mm)
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.plusDays(1).atStartOfDay().minusNanos(1);
         List<Appointment> booked = appointmentRepository.findByDoctorIdAndAppointmentTimeBetween(doctorId, start, end);
 
         Set<String> bookedSlots = new HashSet<>();
         for (Appointment a : booked) {
-            bookedSlots.add(a.getAppointmentTime().toLocalTime().toString());
+            bookedSlots.add(a.getAppointmentTime().toLocalTime().toString()); // e.g., "09:00"
         }
 
-        // Example: assume Doctor has predefined availableTimes (HH:mm strings)
+        // Normalize doctor's availableTimes to HH:mm (take the start if a range like "09:00-10:00")
         Optional<Doctor> docOpt = doctorRepository.findById(doctorId);
         if (docOpt.isEmpty()) return List.of();
 
-        List<String> allSlots = new ArrayList<>(docOpt.get().getAvailableTimes()); // e.g., ["09:00","09:30",...]
-        allSlots.removeIf(slot -> bookedSlots.contains(slot));
-        return allSlots;
+        List<String> normalized = new ArrayList<>();
+        for (String slot : docOpt.get().getAvailableTimes()) {
+            if (slot == null || slot.isBlank()) continue;
+            String startPart = slot.contains("-") ? slot.split("-", 2)[0] : slot;
+            normalized.add(startPart.trim());
+        }
+
+        normalized.removeIf(bookedSlots::contains);
+        return normalized;
     }
 
     public int saveDoctor(Doctor doctor) {

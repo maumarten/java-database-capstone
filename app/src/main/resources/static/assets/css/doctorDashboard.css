@@ -10,12 +10,25 @@ html, body { height: 100%; font-family: Arial, sans-serif; }
 
 .patient-table { width:100%; border-collapse: collapse; }
 .patient-table thead { background: rgba(0,0,0,.6); color:#fff; }
-.patient-table th, .patient-table td { padding: 10px 12px; border-bottom:1px solid #e7efef; }
+.patient-table th, .patient-table td {
+  padding: 10px 12px;
+  border-bottom:1px solid #e7efef;
+  vertical-align: middle;
+}
+.patient-table th { font-weight: 600; }
+/* Column alignment and widths */
+.patient-table th:nth-child(1), .patient-table td:nth-child(1) { text-align: center; width: 100px; }
+.patient-table th:nth-child(2), .patient-table td:nth-child(2) { text-align: left; }
+.patient-table th:nth-child(3), .patient-table td:nth-child(3) { text-align: left; width: 180px; }
+.patient-table th:nth-child(4), .patient-table td:nth-child(4) { text-align: left; width: 260px; }
+.patient-table th:nth-child(5), .patient-table td:nth-child(5) { text-align: center; width: 140px; }
 .patient-table tbody tr:nth-child(even) { background:#f9fbfb; }
 .patient-table tbody tr:hover { background:#eef6f6; }
 .noPatientRecord td { font-style: italic; color: #667; }
 .prescription-btn { background:#333; color:#fff; border:0; padding:8px 10px; border-radius:8px; cursor:pointer; transition: transform .05s, filter .15s; }
 .prescription-btn:hover { filter: brightness(1.15); transform: translateY(1px); }
+/* Ensure image-based action buttons don't blow up the cell */
+img.prescription-btn { width: 28px; height: 28px; object-fit: contain; padding: 0; background: transparent; border: 0; }
 
 @media (max-width: 640px) {
   .search { width:100%; }

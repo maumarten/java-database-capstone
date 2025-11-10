@@ -104,8 +104,7 @@ function filterDoctorsOnChange() {
   const specialty = filterSpecialty.length > 0 ? filterSpecialty : null;
 
   filterDoctors(name, time, specialty)
-    .then(response => {
-      const doctors = response.doctors;
+    .then(doctors => {
       const contentDiv = document.getElementById("content");
       contentDiv.innerHTML = "";
 

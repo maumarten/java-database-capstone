@@ -4,7 +4,7 @@
 
 import { deleteDoctor } from "../services/doctorServices.js";
 import { getPatientData } from "../services/patientServices.js";
-import { showBookingOverlay } from "./modals.js";
+import { openModal, showBookingOverlay } from "./modals.js";
 
 export function createDoctorCard(doctor) {
   const card = document.createElement("div");
@@ -26,7 +26,7 @@ export function createDoctorCard(doctor) {
   email.textContent = `Email: ${doctor.email ?? "—"}`;
 
   const availability = document.createElement("p");
-  const times = Array.isArray(doctor.available_times) ? doctor.available_times.join(", ") : (doctor.available_times || "—");
+  const times = Array.isArray(doctor.availableTimes) ? doctor.availableTimes.join(", ") : (doctor.availableTimes || "—");
   availability.textContent = `Available: ${times}`;
 
   infoDiv.appendChild(name);
@@ -58,7 +58,8 @@ export function createDoctorCard(doctor) {
     const bookNow = document.createElement("button");
     bookNow.textContent = "Book Now";
     bookNow.addEventListener("click", () => {
-      alert("Patient needs to login first.");
+      // Open login modal instead of silent no-op
+      openModal("patientLogin");
     });
     actionsDiv.appendChild(bookNow);
   } else if (role === "loggedPatient") {

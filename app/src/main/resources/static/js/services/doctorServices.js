@@ -59,15 +59,12 @@ export async function saveDoctor(doctor, token) {
   }
 }
 
-// GET /doctor/filter?name=&time=&specialty=
+// GET /doctor/filter/{name}/{time}/{speciality}
+// Backend expects literal "null" when a segment is not provided.
 export async function filterDoctors(name = "", time = "", specialty = "") {
   try {
-    const params = new URLSearchParams();
-    if (name) params.set("name", name);
-    if (time) params.set("time", time);
-    if (specialty) params.set("specialty", specialty);
-
-    const url = `${DOCTOR_API}/filter${params.toString() ? "?" + params.toString() : ""}`;
+    const seg = (v) => (v && v.trim().length > 0 ? encodeURIComponent(v.trim()) : "null");
+    const url = `${DOCTOR_API}/filter/${seg(name)}/${seg(time)}/${seg(studyToSpecialityParam(specialty))}`;
     const res = await fetch(url, { method: "GET" });
     if (!res.ok) return [];
     const data = await res.json();
@@ -76,4 +73,9 @@ export async function filterDoctors(name = "", time = "", specialty = "") {
     console.error("filterDoctors error:", e);
     return [];
   }
+}
+
+// Helper to keep variable naming consistent with backend path var 'speciality'
+function studyToSpecialityParam(value) {
+  return value ?? "";
 }

@@ -43,7 +43,7 @@ public class PatientService {
             res.put("message", "Unauthorized");
             return ResponseEntity.status(401).body(res);
         }
-        List<Appointment> appts = appointmentRepository.findByPatientId(id);
+        List<Appointment> appts = appointmentRepository.findWithRelationsByPatientId(id);
         res.put("appointments", toDTOs(appts));
         return ResponseEntity.ok(res);
     }
@@ -57,7 +57,7 @@ public class PatientService {
             res.put("message", "Invalid condition");
             return ResponseEntity.badRequest().body(res);
         }
-        List<Appointment> appts = appointmentRepository.findByPatient_IdAndStatusOrderByAppointmentTimeAsc(id, status);
+        List<Appointment> appts = appointmentRepository.findWithRelationsByPatientIdAndStatusOrderByAppointmentTimeAsc(id, status);
         res.put("appointments", toDTOs(appts));
         return ResponseEntity.ok(res);
     }

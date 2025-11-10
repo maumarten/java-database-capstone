@@ -60,8 +60,15 @@ async function loadAppointments() {
 
     tbody.innerHTML = "";
     for (const appt of appts) {
-      // Expected structure: { patient: { id, name, phone, email }, prescription: boolean/string, ... }
-      const tr = createPatientRow(appt);
+      const patient = {
+        id: appt.patientId ?? appt.patient?.id,
+        name: appt.patientName ?? appt.patient?.name,
+        phone: appt.patientPhone ?? appt.patient?.phone,
+        email: appt.patientEmail ?? appt.patient?.email,
+      };
+      const appointmentId = appt.id;
+      const doctorId = appt.doctorId ?? appt.doctor?.id;
+      const tr = createPatientRow(patient, appointmentId, doctorId);
       tbody.appendChild(tr);
     }
   } catch (e) {

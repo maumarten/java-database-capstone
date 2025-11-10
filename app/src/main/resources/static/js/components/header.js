@@ -37,14 +37,14 @@
       <a href="#" id="logoutLink">Logout</a>`;
   } else if (role === "loggedPatient") {
     headerContent += `
-      <a href="/pages/patientDashboard.html" id="homeLink">Home</a>
+      <a href="/pages/loggedPatientDashboard.html" id="homeLink">Home</a>
       <a href="/pages/patientAppointments.html" id="apptLink">Appointments</a>
       <a href="#" id="logoutLink">Logout</a>`;
   } else if (role === "patient") {
     headerContent += `
       <a href="/pages/patientDashboard.html">Home</a>
-      <a href="/pages/loggedPatientDashboard.html" id="loginBtn">Login</a>
-      <a href="/pages/patientDashboard.html#signup" id="signupBtn">Sign Up</a>`;
+      <a href="#" id="loginBtn">Login</a>
+      <a href="#" id="signupBtn">Sign Up</a>`;
   } else {
     // unknown / empty role → default to simple home
     headerContent += `<a href="/">Home</a>`;
@@ -62,13 +62,25 @@
     logoutLink.addEventListener("click", (e) => { e.preventDefault(); logout(); });
   }
 
-  // Example: if you want a separate "patient logout" behavior
-  // const logoutPatientLink = document.getElementById("logoutPatientLink");
-  // if (logoutPatientLink) logoutPatientLink.addEventListener("click", (e)=>{ e.preventDefault(); logoutPatient(); });
-
   // optional: other header buttons
   const homeLink = document.getElementById("homeLink");
   if (homeLink) homeLink.addEventListener("click", () => {/* could track navigation */});
+
+  // Open modal login/signup if available
+  const headerLogin = document.getElementById("loginBtn");
+  if (headerLogin) {
+    headerLogin.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.openModal) window.openModal("patientLogin");
+    });
+  }
+  const headerSignup = document.getElementById("signupBtn");
+  if (headerSignup) {
+    headerSignup.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (window.openModal) window.openModal("patientSignup");
+    });
+  }
 })();
 
 // Session helpers

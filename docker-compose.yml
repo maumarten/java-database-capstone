@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: local-mysql
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cms
+      MYSQL_USER: cms_app
+      MYSQL_PASSWORD: cms_app_pw
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./.db/mysql:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:6
+    container_name: local-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: prescriptions
+    volumes:
+      - ./.db/mongo:/data/db
+      - ./docker/mongo/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'db.runCommand({ ping: 1 }).ok' | mongosh localhost:27017/prescriptions -u root -p root --authenticationDatabase admin --quiet | grep 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+

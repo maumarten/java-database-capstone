@@ -26,10 +26,15 @@ export async function patientSignup(data) {
 export async function patientLogin(data) {
   // NOTE: log inputs only during development
   try {
+    // backend expects { identifier, password }
+    const payload = {
+      identifier: data.identifier ?? data.email,
+      password: data.password
+    };
     const res = await fetch(`${PATIENT_API}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     });
     return res;
   } catch (e) {
@@ -38,14 +43,13 @@ export async function patientLogin(data) {
   }
 }
 
-// GET /patient/me
+// GET /patient/{token}
 export async function getPatientData(token) {
   try {
-    const res = await fetch(`${PATIENT_API}/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(`${PATIENT_API}/${encodeURIComponent(token)}`);
     if (!res.ok) return null;
-    return await res.json();
+    const data = await res.json();
+    return data?.patient || null;
   } catch (e) {
     console.error("getPatientData error:", e);
     return null;
